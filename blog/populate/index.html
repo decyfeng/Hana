@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+
+<script src="lib/jquery-2.1.4.min.js"></script>
+<script src="lib/underscore-min.js"></script>
+<script src="lib/parse-latest.js"></script>
+
+<script>
+
+    Parse.initialize("cFdabJuZn4byw5SdCGryu4TAXmtkT1tbyjQDLVkK", "tQPsS5OTVFSDGfsqFw9gsYE2UPHJa5ptEScaNJuw");
+
+  $.ajax({
+  url:"https://www.kimonolabs.com/api/2cnov4ww?apikey=XnSNCufWfxNa2vxYyqTV7y1YbwCu8yo5",
+  crossDomain: true,
+  dataType: "jsonp",
+  success: function (response) {
+	 alert("yay! I get some data from kim");
+   console.log(response);
+   alert(response.count);
+   var collections = response.results;
+   console.log(collections);
+   console.log(collections.mascara);
+   var mas = collections.mascara;
+   //console.log(collections.get().[0]);
+
+    for(var i = 0; i < response.count; i++) {
+    var item = mas[i];
+    var BeautyItem = Parse.Object.extend("MascaraWithLink");
+    var parseItem = new BeautyItem();
+    console.log(item);
+
+    parseItem.save({
+      name: item.name.text,
+      brand: item.brand,
+      price: item.price,
+      rank: item.index,
+      click: item.name.href
+    }, {
+      success: function(parseItem) {
+        // saved
+        console.log("saved");
+      },
+      error: function(parseItem, error) {
+        // failed
+        console.log("failed");
+      }
+
+    });
+    //saved one item 
+    } // end for
+  },
+  error: function (xhr, status) {
+   alert("some error" + status.toString());
+  } 
+  });
+
+</script>
+
+</body>
+</html>
